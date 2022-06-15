@@ -2,7 +2,6 @@ package com.localspeak;
 
 import java.io.IOException;
 import java.net.Inet4Address;
-import java.net.UnknownHostException;
 import java.util.Scanner;
 
 import com.localspeak.services.*;
@@ -10,6 +9,7 @@ import com.localspeak.utility.*;
 
 public final class App {
     static Scanner reader;
+    static Thread t1;
 
     private App() {
     }
@@ -40,7 +40,7 @@ public final class App {
     }
 
     public static void startServerThread(int port) {
-        Thread t1 = new Thread(new Runnable() {
+        t1 = new Thread(new Runnable() {
             public void run() {
                 try {
                     Server server = new Server();

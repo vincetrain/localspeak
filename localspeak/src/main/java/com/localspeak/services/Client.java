@@ -3,7 +3,7 @@ package com.localspeak.services;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-
+import java.net.Inet4Address;
 import java.net.Socket;
 
 public class Client {
@@ -14,8 +14,8 @@ public class Client {
     DataOutputStream dout;
     DataInputStream din;
 
-    public void createConnection() throws IOException{
-        socket = new Socket("localhost", 17763);
+    public void createConnection(Inet4Address ip, int port) throws IOException{
+        socket = new Socket(ip, port);
     }
 
     public void closeConnection() throws IOException {

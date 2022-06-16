@@ -24,6 +24,8 @@ public class Server {
         din = new DataInputStream(socket.getInputStream());
         dout = new DataOutputStream(socket.getOutputStream());
 
+
+
         while (!socket.isClosed()) {
             clientmsg = (String)din.readUTF();
             dout.writeUTF((socket.getInetAddress() + ": " + clientmsg));

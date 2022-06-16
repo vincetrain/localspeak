@@ -2,108 +2,63 @@ package com.localspeak;
 
 import java.io.IOException;
 import java.net.Inet4Address;
+import java.net.UnknownHostException;
 import java.util.Scanner;
 
 import com.localspeak.services.*;
 import com.localspeak.utility.*;
 
 public final class App {
-    static final String menu = (".__                       .__                                __    \n"
-    .concat("|  |   ____   ____ _____  |  |   ____________   ____ _____  |  | __\n")
-    .concat("|  |  /  _ \\_/ ___\\\\__  \\ |  |  /  ___/\\____ \\_/ __ \\\\__  \\ |  |/ /\n")
-    .concat("|  |_(  <_> )  \\___ / __ \\|  |__\\___ \\ |  |_> >  ___/ / __ \\|    < \n")
-    .concat("|____/\\____/ \\___  >____  /____/____  >|   __/ \\___  >____  /__|_ \\\n")
-    .concat("                 \\/     \\/          \\/ |__|        \\/     \\/     \\/\n"
-    .concat("---------------------------------------------------------------\n")
-    .concat("1) Chat\n")
-    .concat("2) Read logs\n")
-    .concat("3) Settings\n")
-    .concat("9) Exit")));
-    
-    
-    
-
     private App() {
     }
 
     public static void main(String[] args) {
-        final String exitCondition = "9";
+        int serverport = 17763;
+        Scanner reader = null;
 
-        Scanner reader;
-        String userInput = "";
-
-        Thread serverThread = null;
-
-
-
-        // Menu loop
-        do {
-            System.out.println(menu);
-            reader = new Scanner(System.in);
-            userInput = reader.nextLine();
-
-            if (userInput.equals("1")) {
-                startChat(reader);
-            }
-            else if (userInput.equals("2")) {
-
-            }
-            else if (userInput.equals("3")) {
-
-            }
-        } while(!userInput.equals(exitCondition));
-
-
-    }
-
-    /**
-     * Starts asynchronous listener server thread
-     * 
-     * @param thread Thread object to be started
-     * @param port Port to open server on
-     */
-    public static void startServerThread(Thread thread) {
-        int port = 17763;
-
-        thread = new Thread(new Runnable() {
+        // Starts new "serverThread" in background
+        Thread serverThread = new Thread() {
             public void run() {
                 try {
-                    Server server = new Server();
-                    server.startServer(port);
-                } catch (Exception e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                    System.out.println("Unable to start listener server. Exiting...");
+                    Server server = new Server(serverport);
+                }
+                catch (IOException e) {
+                    System.out.println("Failed to get I/O: " + e);   
                 }
             }
-        });
-        thread.start();
-    }
+        };
 
-    public static void startChat(Scanner reader) {
-        Thread serverThread = null;
 
+        // Initializes new client instance
         Inet4Address ip = MainUtil.getInet4Address(reader);
         int port = MainUtil.getPort(reader);
 
-        Client client = new Client();
         try {
-            client.createConnection(ip, port);
+            if (ip == (Inet4Address)Inet4Address.getByName("localhost")) {
+                serverThread.start();
+            }
+        } catch (Exception e) {
+            System.out.println("how the fuck did localhost fail: " + e);
+        }
+
+        try {
+            Client client = new Client(ip, port);
             String userInput = "";
-            System.out.println("Enter \"__close\" to exit chat.");
-            startServerThread(serverThread);  // Starts server thread
-            while(!userInput.equals("__close")) {
+            do {
                 reader = new Scanner(System.in);
                 userInput = reader.nextLine();
-                if (!userInput.equals("__close")) {
+                if (!userInput.equals("__exit")) {
                     client.sendMessage(userInput); 
                 }
-            }
-            client.closeConnection();
+            } while(!userInput.equals("__exit"));
+            client.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Failed, no I/O: " + e);
         }
+
         serverThread.interrupt();
         serverThread.stop();
     }
+
+
 }

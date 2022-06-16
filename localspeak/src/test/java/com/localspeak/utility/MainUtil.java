@@ -30,7 +30,7 @@ public class MainUtil {
     }
 
     /**
-     * Gets specified port
+     * Gets specified port to connect to
      * 
      * @return int port number
      */
@@ -38,7 +38,7 @@ public class MainUtil {
         int port = 17763;
         try {
             do {
-                System.out.println("Enter port (1025 - 65535): ");
+                System.out.println("Enter a port to connect to: ");
                 reader = new Scanner(System.in);
                 port = reader.nextInt();
             } while(!confirm(reader, ""+port));

@@ -4,29 +4,27 @@ import java.net.Inet4Address;
 import java.util.Scanner;
 
 public class MainUtil {
-    static Scanner reader;
-
     /**
      * Gets IPv4 address to connect to
      * 
      * @return Inet4Address
      * @throws UnknownHostException
      */
-    public static Inet4Address getInet4Address() {
+    public static Inet4Address getInet4Address(Scanner reader) {
         Inet4Address ip = null;
         String userInput = "";
         do {
             System.out.println("Enter an IPv4 Address: ");
             reader = new Scanner(System.in);
             userInput = reader.nextLine();
-        } while(!confirm(userInput));
+        } while(!confirm(reader, userInput));
         // If address is not a valid address, then recursively call function to get another address
         try {
             ip = (Inet4Address) Inet4Address.getByName(userInput);
         }
         catch (Exception e) {
             System.out.println("That address is not a valid IPv4 address.");
-            ip = getInet4Address();
+            ip = getInet4Address(reader);
         }
         return ip;
     }
@@ -36,16 +34,16 @@ public class MainUtil {
      * 
      * @return int port number
      */
-    public static int getPort() {
+    public static int getPort(Scanner reader) {
         int port = 17763;
         try {
             do {
                 System.out.println("Enter a port to connect to: ");
                 reader = new Scanner(System.in);
                 port = reader.nextInt();
-            } while(!confirm(""+port));
+            } while(!confirm(reader, ""+port));
             if (port < 1024 || port > 65536) {
-                port = getPort();
+                port = getPort(reader);
             }
         }
         catch (Exception e) {
@@ -60,7 +58,7 @@ public class MainUtil {
      * @param userInput
      * @return true/false depending on user confirmation
      */
-    public static boolean confirm(String userInput) {
+    public static boolean confirm(Scanner reader, String userInput) {
         System.out.print("Confirm \"" + userInput + "\"? Y/N: ");
         reader = new Scanner(System.in);
         if (reader.nextLine().equals("y")) {

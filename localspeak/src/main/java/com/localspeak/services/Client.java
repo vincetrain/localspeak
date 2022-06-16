@@ -16,6 +16,7 @@ public class Client {
 
     public void createConnection(Inet4Address ip, int port) throws IOException{
         socket = new Socket(ip, port);
+        sendMessage(" connected.");
     }
 
     public void closeConnection() throws IOException {

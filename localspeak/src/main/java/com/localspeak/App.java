@@ -8,21 +8,90 @@ import com.localspeak.services.*;
 import com.localspeak.utility.*;
 
 public final class App {
-    static Scanner reader;
-    static Thread t1;
+    static final String menu = (".__                       .__                                __    \n"
+    .concat("|  |   ____   ____ _____  |  |   ____________   ____ _____  |  | __\n")
+    .concat("|  |  /  _ \\_/ ___\\\\__  \\ |  |  /  ___/\\____ \\_/ __ \\\\__  \\ |  |/ /\n")
+    .concat("|  |_(  <_> )  \\___ / __ \\|  |__\\___ \\ |  |_> >  ___/ / __ \\|    < \n")
+    .concat("|____/\\____/ \\___  >____  /____/____  >|   __/ \\___  >____  /__|_ \\\n")
+    .concat("                 \\/     \\/          \\/ |__|        \\/     \\/     \\/\n"
+    .concat("---------------------------------------------------------------\n")
+    .concat("1) Chat\n")
+    .concat("2) Read logs\n")
+    .concat("3) Settings\n")
+    .concat("9) Exit")));
+    
+    
+    
 
     private App() {
     }
 
     public static void main(String[] args) {
-        // Initializes new client instance
-        Inet4Address ip = MainUtil.getInet4Address();
-        int port = MainUtil.getPort();
+        final String exitCondition = "9";
+
+        Scanner reader;
+        String userInput = "";
+
+        Thread serverThread = null;
+
+
+
+        // Menu loop
+        do {
+            System.out.println(menu);
+            reader = new Scanner(System.in);
+            userInput = reader.nextLine();
+
+            if (userInput.equals("1")) {
+                startChat(reader);
+            }
+            else if (userInput.equals("2")) {
+
+            }
+            else if (userInput.equals("3")) {
+
+            }
+        } while(!userInput.equals(exitCondition));
+
+
+    }
+
+    /**
+     * Starts asynchronous listener server thread
+     * 
+     * @param thread Thread object to be started
+     * @param port Port to open server on
+     */
+    public static void startServerThread(Thread thread) {
+        int port = 17763;
+
+        thread = new Thread(new Runnable() {
+            public void run() {
+                try {
+                    Server server = new Server();
+                    server.startServer(port);
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                    System.out.println("Unable to start listener server. Exiting...");
+                }
+            }
+        });
+        thread.start();
+    }
+
+    public static void startChat(Scanner reader) {
+        Thread serverThread = null;
+
+        Inet4Address ip = MainUtil.getInet4Address(reader);
+        int port = MainUtil.getPort(reader);
 
         Client client = new Client();
         try {
             client.createConnection(ip, port);
-            String userInput = ";";
+            String userInput = "";
+            System.out.println("Enter \"__close\" to exit chat.");
+            startServerThread(serverThread);  // Starts server thread
             while(!userInput.equals("__close")) {
                 reader = new Scanner(System.in);
                 userInput = reader.nextLine();
@@ -34,26 +103,7 @@ public final class App {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        t1.interrupt();
-        t1.stop();
-    }
-
-    public static void startServerThread(int port) {
-        t1 = new Thread(new Runnable() {
-            public void run() {
-                try {
-                    Server server = new Server();
-                    server.startServer(port);
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                    System.out.println("Unable to start listener server. Exiting...");
-                    System.exit(0);
-                }
-            }
-        });
-
-        t1.start();
+        serverThread.interrupt();
+        serverThread.stop();
     }
 }

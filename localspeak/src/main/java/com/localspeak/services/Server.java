@@ -20,16 +20,54 @@ public class Server {
 
     public Server(int port) throws IOException {
         serverSocket = new ServerSocket(port); // Initialize server socket under provided port
-        socket = serverSocket.accept(); // Accepts incoming connection into socket
-        din = new DataInputStream(socket.getInputStream());
-        dout = new DataOutputStream(socket.getOutputStream());
-
-        while (!socket.isClosed()) {
-            clientmsg = (String)din.readUTF();
-            dout.writeUTF((socket.getInetAddress() + ": " + clientmsg));
+        serverSocket.setReuseAddress(true);
+        while (true) {
+            socket = serverSocket.accept(); // Accepts incoming connection into socket
+            ClientHandler clientHandler = new ClientHandler(socket);
+            clientHandler.run();
         }
-
-        dout.close();
-        din.close();
     }
 }
+
+class ClientHandler implements Runnable {
+
+    DataInputStream din;
+    DataOutputStream dout;
+
+    Socket socket;
+
+    public ClientHandler(Socket socket) {
+        this.socket = socket;
+    }
+
+    @Override
+    public void run() {
+        try {
+            String userInput = "";
+            din = new DataInputStream(socket.getInputStream());
+            dout = new DataOutputStream(socket.getOutputStream());
+            dout.writeUTF(socket.getInetAddress().getHostAddress() + " connected.");
+            while ((userInput = din.readUTF()) != null) {
+                dout.writeUTF(socket.getInetAddress().getHostAddress() + ": " + userInput);
+            }
+        }
+        catch (Exception e) {
+            System.out.println("An error occured: " + e);
+        }
+        finally {
+            try {
+                if (dout != null) {
+                    dout.close();
+                }
+                if (din != null) {
+                    din.close();
+                    din.close();
+                }
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+

@@ -2,7 +2,6 @@ package com.localspeak;
 
 import java.io.IOException;
 import java.net.Inet4Address;
-import java.net.UnknownHostException;
 import java.util.Scanner;
 
 import com.localspeak.services.*;

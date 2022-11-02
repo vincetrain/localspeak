@@ -1,3 +1,5 @@
+NEEDS REFACTORING
+
 # localspeak #  
 localspeak is a Java net based chat application that runs within a CLI or GUI environment.
 

@@ -1,4 +1,4 @@
-package com.localspeak.util;
+package com.localspeak.helper;
 
 import java.io.File;
 import java.io.FileNotFoundException;

@@ -1,4 +1,4 @@
-package com.localspeak.models;
+package com.localspeak.model;
 
 import java.util.Date;
 

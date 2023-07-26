@@ -1,8 +1,9 @@
 package com.localspeak;
 
-import com.localspeak.util.*;
-
 import java.util.Scanner;
+
+import com.localspeak.model.UserSettings;
+// import com.google.gson.Gson;
 
 /**
  * Hello world!
@@ -11,21 +12,43 @@ import java.util.Scanner;
 public class App 
 {
 
-    static Scanner reader;
+    final static Scanner reader = new Scanner(System.in);
+    // final static Gson gson = new Gson();
 
+   
     final static String EXITCONDITION = "9";
 
-    public static void main( String[] args )
-    {
+    public static void main( String[] args ) {
+        // try {
+        //     UserSettings settings = gson.fromJson(new FileReader("./usersettings.json"), UserSettings.class);
+        // } catch (Exception e) {
+        //     System.out.println("Something went wrong");
+        //     e.printStackTrace();
+        // }
+
         String userIn;
         // Loop printing main menu until user wishes to exit
         do {
             printMenu();
-            reader = new Scanner(System.in);
             userIn = reader.nextLine();
+            if (userIn.equals("1")) {
+                // do something
+            }
+            else if (userIn.equals("2")) {
+                // do something else
+            }
         } while(!userIn.equals(EXITCONDITION));
+
+        reader.close();
         System.exit(0);
-        
+
+    }
+
+    /**
+     * 
+     */
+    public static void settings() {
+
     }
 
     /**

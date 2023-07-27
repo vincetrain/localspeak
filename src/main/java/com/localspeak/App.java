@@ -1,30 +1,29 @@
 package com.localspeak;
 
 import java.util.Scanner;
+import java.io.FileReader;
 
 import com.localspeak.model.UserSettings;
-// import com.google.gson.Gson;
+import com.google.gson.Gson;
 
-/**
- * Hello world!
- *
- */
-public class App 
-{
+public class App {
 
     final static Scanner reader = new Scanner(System.in);
-    // final static Gson gson = new Gson();
+    final static Gson gson = new Gson();
 
    
     final static String EXITCONDITION = "9";
 
     public static void main( String[] args ) {
-        // try {
-        //     UserSettings settings = gson.fromJson(new FileReader("./usersettings.json"), UserSettings.class);
-        // } catch (Exception e) {
-        //     System.out.println("Something went wrong");
-        //     e.printStackTrace();
-        // }
+
+        UserSettings settings;
+
+        try {
+            settings = gson.fromJson(new FileReader("./usersettings.json"), UserSettings.class);
+        } catch (Exception e) {
+            System.out.println("Something went wrong");
+            e.printStackTrace();
+        }
 
         String userIn;
         // Loop printing main menu until user wishes to exit
@@ -41,7 +40,6 @@ public class App
 
         reader.close();
         System.exit(0);
-
     }
 
     /**

@@ -3,4 +3,5 @@ localspeak is a Java chat application that uses P2P connections to send messages
 
 ## Plans
 - [ ] Implement P2P communication via Java Socket  
-- [ ] Encrypt messages using RSA
+- [ ] Implement message encryption with AES  
+- [ ] Implement working frontend with Lanterna, a curses-like library for Java  

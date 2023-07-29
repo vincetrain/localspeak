@@ -10,7 +10,7 @@ class RSAException extends Exception {
     }
 }
 
-public class AESHelper {
+public class RSAHelper {
     private String publicKey;
     private String privateKey;
     
@@ -22,7 +22,7 @@ public class AESHelper {
      * @throws FileNotFoundException Thrown if unable to find private or public key file(s)
      * @throws RSAException Thrown if public key and private key are invalid
      */
-    public AESHelper(String publicKey, String privateKey) throws FileNotFoundException, RSAException {
+    public RSAHelper(String publicKey, String privateKey) throws FileNotFoundException, RSAException {
         Scanner reader;
 
         // Get publicKey contents

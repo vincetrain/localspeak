@@ -1,31 +1,27 @@
 package com.localspeak;
 
 import java.util.Scanner;
-import java.io.FileReader;
+import java.io.IOException;
 
 public class App {
 
+    final static int PORT_DEFAULT = 7763;
+
     final static Scanner reader = new Scanner(System.in);
 
-   
-    final static String EXITCONDITION = "9";
-
     public static void main( String[] args ) {
-        String userIn;
-        // Loop printing main menu until user wishes to exit
-        do {
-            printMenu();
-            userIn = reader.nextLine();
-            if (userIn.equals("1")) {
-                // do something
+        Connection connection = new Connection();
+        PacketHandler messageHandler = new PacketHandler();
+        try {
+            connection.listen(PORT_DEFAULT);
+            while (true) {
+                
             }
-            else if (userIn.equals("2")) {
-                // do something else
-            }
-        } while(!userIn.equals(EXITCONDITION));
 
-        reader.close();
-        System.exit(0);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -49,8 +45,8 @@ public class App {
             "                        | |                    \n" +
             "                        |_|                    \n" +
             "------------------------------------------------\n" +
-            "1) Connect via IPv4\n" +
-            "2) Settings\n" +
+            "1) Connect to host\n" +
+            "2) Start server\n" +
             "9) Exit\n"
         );
     }

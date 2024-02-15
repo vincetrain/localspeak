@@ -1,11 +1,12 @@
 package com.localspeak;
 
-public class MessageHandler implements MessageListener {
+import java.util.Date;
+
+public class PacketHandler {
 
     String data_prev = "";
 
-    @Override
-    public void newMessage(String data) {
+    public void newMessage(String data, Date timestamp) {
         if (!data.equals(data_prev)) {
             System.out.println(new String(data));
             data_prev = new String(data);

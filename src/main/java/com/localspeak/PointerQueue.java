@@ -17,17 +17,16 @@ public class PointerQueue {
      * @param pointer Integer describing the next available pointer.
      */
     public void enqueue(int pointer) {
-        NextPointer pointerIterator = front;    // start from top of queue
-        // iterate through queue until we find the end node
-        while (pointerIterator != rear) {
-            pointerIterator = pointerIterator.getNext();
-        }
         // create a new node with desired pointer
         NextPointer newPointer = new NextPointer(pointer);
         // make old rear point to the new node
         rear.setNext(newPointer);
         // set new rear as what the old rear is pointing to (new node)
         rear = rear.getNext();
+        // set front as rear if front is null (queue is empty)
+        if (front == null) {
+            front = rear;
+        }
     }
 
     /**
@@ -35,8 +34,11 @@ public class PointerQueue {
      * @return Integer describing the next available pointer.
      */
     public int dequeue() {
-        int frontPointer = front.value();
-        front = front.getNext();
+        int frontPointer = -1;
+        if (front != null) {
+            frontPointer = front.value();
+            front = front.getNext();
+        }
         return frontPointer;
     }
 

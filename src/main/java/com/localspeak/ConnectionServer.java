@@ -42,6 +42,12 @@ public class ConnectionServer {
         }
     }
 
+    /**
+     * Starts listening for connections using Java ServerSocket, listening on specified desiredPort. 
+     * @param desiredPort Integer specifying port to listen on with ServerSocket
+     * @throws IOException
+     * @throws PortOutOfRangeException
+     */
     public void listen(int desiredPort) throws IOException, PortOutOfRangeException {
         int currentPointer;
         

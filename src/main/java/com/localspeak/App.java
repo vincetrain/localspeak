@@ -10,10 +10,11 @@ public class App {
     final static Scanner reader = new Scanner(System.in);
 
     public static void main( String[] args ) {
-        Connection connection = new Connection();
-        PacketHandler messageHandler = new PacketHandler();
+        ConnectionServer connection = new ConnectionServer();
+
         try {
             connection.listen(PORT_DEFAULT);
+            System.out.println("Connection started");
             while (true) {
                 
             }
@@ -22,13 +23,6 @@ public class App {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-    }
-
-    /**
-     * 
-     */
-    public static void settings() {
-
     }
 
     /**
